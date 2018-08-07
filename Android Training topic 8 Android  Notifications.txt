@@ -1,0 +1,135 @@
+Android topic 8 Android  Notifications
+
+==============A notification is a message you can display to the user outside of your application's normal UI.
+ When you tell the system to issue a notification,==========
+
+
+===]Android Toast class provides a handy way to show users alerts
+
+Step 1 		 Create Notification Builder
+As a first step is to create a notification builder using 
+
+		NotificationCompat.Builder.build()
+
+NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+
+
+Step 2 - Setting Notification Properties
+
+
+A small icon, set by setSmallIcon()
+
+A title, set by setContentTitle()
+
+Detail text, set by setContentText()
+
+
+mBuilder.setSmallIcon(R.drawable.notification_icon);
+mBuilder.setContentTitle("Notification Alert, Click Me!");
+mBuilder.setContentText("Hi, This is Android Notification Detail!");
+
+============================================/=======================
+
+
+Intent resultIntent = new Intent(this, ResultActivity.class);
+TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+stackBuilder.addParentStack(ResultActivity.class);
+
+// Adds the Intent that starts the Activity to the top of the stack
+stackBuilder.addNextIntent(resultIntent);
+PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
+mBuilder.setContentIntent(resultPendingIntent);
+
+
+Step 3) 	 Issue the notification
+
+
+NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+    
+// notificationID allows you to update the notification later on.
+mNotificationManager.notify(notificationID, mBuilder.build());
+
+
+
+
+1	Notification build()
+
+				Combine all of the options that have been set and return a new Notification object.
+
+2	NotificationCompat.Builder setAutoCancel (boolean autoCancel)
+
+Setting this flag will make it so the notification is automatically canceled when the user clicks it in the panel.
+
+3	NotificationCompat.Builder setContent (RemoteViews views)
+
+Supply a custom RemoteViews to use instead of the standard one.
+
+4	NotificationCompat.Builder setContentInfo (CharSequence info)
+
+Set the large text at the right-hand side of the notification.
+
+5	NotificationCompat.Builder setContentIntent (PendingIntent intent)
+
+Supply a PendingIntent to send when the notification is clicked.
+
+6	NotificationCompat.Builder setContentText (CharSequence text)
+
+Set the text (second row) of the notification, in a standard notification.
+
+7	NotificationCompat.Builder setContentTitle (CharSequence title)
+
+Set the text (first row) of the notification, in a standard notification.
+
+8	NotificationCompat.Builder setDefaults (int defaults)
+
+Set the default notification options that will be used.
+
+9	NotificationCompat.Builder setLargeIcon (Bitmap icon)
+
+Set the large icon that is shown in the ticker and notification.
+
+10	NotificationCompat.Builder setNumber (int number)
+
+Set the large number at the right-hand side of the notification.
+
+11	NotificationCompat.Builder setOngoing (boolean ongoing)
+
+Set whether this is an ongoing notification.
+
+12	NotificationCompat.Builder setSmallIcon (int icon)
+
+Set the small icon to use in the notification layouts.
+
+13	NotificationCompat.Builder setStyle (NotificationCompat.Style style)
+
+Add a rich notification style to be applied at build time.
+
+14	NotificationCompat.Builder setTicker (CharSequence tickerText)
+
+Set the text that is displayed in the status bar when the notification first arrives.
+
+15	NotificationCompat.Builder setVibrate (long[] pattern)
+
+Set the vibration pattern to use.
+
+16	NotificationCompat.Builder setWhen (long when)
+
+Set the time that the event occurred. Notifications in the panel are sorted by this time.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

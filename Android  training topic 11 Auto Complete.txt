@@ -1,0 +1,71 @@
+Auto Complete
+
+==================
+
+It provides suggestions automatically when the user is typing. The list of suggestions is displayed in a drop down menu
+ from which the user can choose an item to replace the content of the edit box with.
+
+AutoCompleteTextView
+   android:id="@+id/autoCompleteTextView1"
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:layout_alignParentTop="true"
+   android:layout_centerHorizontal="true"
+   android:layout_marginTop="65dp"
+   android:ems="10" >
+
+
+================
+
+After that, you have to get a reference of this textview in java. Its syntax is given below.
+
+private AutoCompleteTextView actv;
+actv = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView1);
+
+==============
+he the next thing you need to do is to specify the list of suggestions items to be displayed. You can 
+specify the list items as a string array in java or in strings.xml. Its syntax is given below.
+
+
+String[] countries = getResources().getStringArray(R.array.list_of_countries);
+ArrayAdapter<String> adapter = new ArrayAdapter<String>
+   (this,android.R.layout.simple_list_item_1,countries);
+actv.setAdapter(adapter);
+
+==========================
+
+1	getAdapter()
+
+		This method returns a filterable list adapter used for auto completion
+
+2	getCompletionHint()
+
+			This method returns optional hint text displayed at the bottom of the the matching list
+
+3	getDropDownAnchor()
+
+			This method returns returns the id for the view that the auto-complete drop down list is anchored to.
+
+4	getListSelection()
+
+		This method returns the position of the dropdown view selection, if there is one
+
+5	isPopupShowing()
+
+		This method indicates whether the popup menu is showing
+
+6	setText(CharSequence text, boolean filter)
+
+		This method sets text except that it can disable filtering
+
+7	showDropDown()
+
+		This method displays the drop down on screen.
+
+==================/=====================
+
+
+
+
+
+

@@ -1,0 +1,40 @@
+Image Switcher
+
+===================An image switcher allows you to add some transitions on
+ the images through the way they appear on screen.
+
+<ImageSwitcher
+   android:id="@+id/imageSwitcher1"
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:layout_centerHorizontal="true"
+   android:layout_centerVertical="true" >
+</ImageSwitcher>
+
+
+=========================/==================
+
+private ImageSwitcher imageSwitcher;
+imageSwitcher = (ImageSwitcher)findViewById(R.id.imageSwitcher1);
+
+=========================
+
+imageSwitcher.setImageResource(R.drawable.ic_launcher);
+imageSwitcher.setFactory(new ViewFactory() {
+   public View makeView() {
+      ImageView myView = new ImageView(getApplicationContext());
+      return myView;
+   }
+}
+
+
+==========================
+Animation in = AnimationUtils.loadAnimation(this,android.R.anim.slide_in_left);
+imageSwitcher.setInAnimation(in);
+imageSwitcher.setOutAnimation(out);
+
+
+
+
+
+

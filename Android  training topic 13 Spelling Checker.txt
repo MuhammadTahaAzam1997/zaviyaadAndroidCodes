@@ -1,0 +1,224 @@
+===========================Spelling Checker==============
+
+he Android platform offers a spelling checker framework that lets you implement and access 
+spell checking in your application.
+
+
+SpellCheckerSessionListener interface and override its methods
+
+
+============
+
+public class HelloSpellCheckerActivity extends Activity implements SpellCheckerSessionListener {
+   @Override
+   public void onGetSuggestions(final SuggestionsInfo[] arg0) {
+      // TODO Auto-generated method stub
+   }
+   
+   @Override
+   public void onGetSentenceSuggestions(SentenceSuggestionsInfo[] arg0) {
+      // TODO Auto-generated method stub
+   }
+}
+
+
+
+Next thing you need to do is to create an object of SpellCheckerSession class. This object can be instantiated 
+by calling newSpellCheckerSession method of TextServicesManager class
+
+
+private SpellCheckerSession mScs;
+final TextServicesManager tsm = (TextServicesManager) getSystemService(
+Context.TEXT_SERVICES_MANAGER_SERVICE);
+mScs = tsm.newSpellCheckerSession(null, null, this, true);  
+
+
+==========
+mScs.getSuggestions(new TextInfo(editText1.getText().toString()), 3);
+
+===============Sr.No======================	Method & description
+1	cancel()
+
+		Cancel pending and running spell check tasks
+
+2	close()
+
+		Finish this session and allow TextServicesManagerService to disconnect the bound spell checker
+
+3	getSentenceSuggestions(TextInfo[] textInfos, int suggestionsLimit)
+
+			Get suggestions from the specified sentences
+
+4	getSpellChecker()
+
+		Get the spell checker service info this spell checker session has.
+
+5	isSessionDisconnected()
+
+		True if the connection to a text service of this session is disconnected and not aliv
+
+
+
+
+==========================
+
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.zaaviyah.zaaviyah_spellingcheckers.MainActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="ZAAVIYAH SOLIUTIONS"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/textView" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Suggestions"
+        android:id="@+id/button"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="31dp"
+        android:focusable="true"
+        android:hint="Enter Text"
+        android:textColorHighlight="#fe78"
+        android:textColorHint="#6633" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="200dp"
+        android:layout_height="150dp"
+        app:srcCompat="@drawable/shahlogo"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="77dp"
+        android:layout_marginEnd="77dp"
+        android:layout_marginTop="54dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:textSize="34dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_above="@+id/editText"
+
+        android:layout_centerHorizontal="true"
+        android:text="Suggestions " />
+
+</RelativeLayout>
+===========================================
+
+package com.zaaviyah.zaaviyah_spellingcheckers;
+
+import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.view.textservice.SentenceSuggestionsInfo;
+import android.view.textservice.SpellCheckerSession;
+import android.view.textservice.SuggestionsInfo;
+import android.view.textservice.TextInfo;
+import android.view.textservice.TextServicesManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity implements SpellCheckerSession.SpellCheckerSessionListener {
+
+    Button b1;
+    TextView tv1;
+    EditText ed1;
+    private SpellCheckerSession mScs;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        b1=(Button)findViewById(R.id.button);
+        tv1=(TextView)findViewById(R.id.textView3);
+
+        ed1=(EditText)findViewById(R.id.editText);
+
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), ed1.getText().toString(),Toast.LENGTH_SHORT).show();
+                mScs.getSuggestions(new TextInfo(ed1.getText().toString()), 3);
+            }
+        });
+    }
+
+
+
+    public void onResume () {
+        super.onResume();
+
+        final TextServicesManager tsm = (TextServicesManager)
+                getSystemService(Context.TEXT_SERVICES_MANAGER_SERVICE);
+        mScs = tsm.newSpellCheckerSession(null, null, this, true);
+    }
+
+    public void onPause() {
+        super.onPause();
+        if (mScs != null) {
+            mScs.close();
+        }
+    }
+
+
+    public void onGetSuggestions(final SuggestionsInfo[] arg0) {
+        final StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < arg0.length; ++i) {
+            // Returned suggestions are contained in SuggestionsInfo
+            final int len = arg0[i].getSuggestionsCount();
+            sb.append('\n');
+
+            for (int j = 0; j < len; ++j) {
+                sb.append("," + arg0[i].getSuggestionAt(j));
+            }
+
+            sb.append(" (" + len + ")");
+        }
+
+        runOnUiThread(new Runnable() {
+            public void run() {
+                tv1.append(sb.toString());
+            }
+        });
+    }
+
+
+    public void onGetSentenceSuggestions(SentenceSuggestionsInfo[] arg0) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+}
+
+
+
+
